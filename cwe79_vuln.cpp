@@ -1,12 +1,32 @@
 #include <iostream>
 #include <fstream>
+#include <string>
 using namespace std;
-// Vulnerable: writes user input directly to HTML
+
 int main() {
-    string input;
-    cout << "Enter text: ";
-    getline(cin, input);
-    ofstream f("output.html");
-    f << "<html><body>User says: " << input << "</body></html>";
+    string userInput;
+
+    cout << "Enter text to write into the HTML file: ";
+    getline(cin, userInput);
+
+    ofstream fout("comments.txt");
+    fout << userInput;
+    fout.close();
+
+    ofstream htmlout("vulnerable79.html");
+    ifstream fin("comments.txt");
+    string comment;
+
+    htmlout << "<html><body>\n";
+    while (getline(fin, comment)){
+        htmlout << "<p>" << comment << "</p>\n";
+
+    }
+    htmlout << "</body></html>";
+    fin.close();
+    htmlout.close();
+
+    cout << "Data written to vulnerable79.html" << endl;
     return 0;
 }
+
